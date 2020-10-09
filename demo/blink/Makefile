@@ -2,7 +2,7 @@
 
 # _______________________ User overridable configuration _______________________
 
-PROJECT_NAME            ?= project-base
+PROJECT_NAME            ?= blink
 
 VERSION_MAJOR           ?= 1
 VERSION_MINOR           ?= 0
@@ -84,12 +84,11 @@ NODE_PLATFORM_DIR       := $(ZOO)/thinnect.node-platform
 
 # ______________ Build components - sources and includes _______________________
 
-SOURCES += smnt-mb-base-main.c
+SOURCES += blink-main.c
 
 # Source code created for this project
-#INCLUDES += -I$(ROOT_DIR)/include
-#SOURCES += $(ROOT_DIR)/src/noise_sensor.c
-#SOURCES += $(ROOT_DIR)/src/noise_analyzer.c
+INCLUDES += -I$(ROOT_DIR)/inc
+SOURCES += $(ROOT_DIR)/src/timer_handler.c
 
 # FreeRTOS
 FREERTOS_DIR ?= $(ZOO)/FreeRTOS-Kernel

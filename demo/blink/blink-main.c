@@ -1,8 +1,10 @@
 /**
- * Project base for smnt-mb devices.
+ * Blink example for smnt-mb devices.
+ *
+ * Uses PWM.
  *
  * @copyright ProLab 2020
- * @license <TBD>
+ * @license MIT
  */
 #include <stdio.h>
 #include <stdint.h>
@@ -34,6 +36,8 @@
 #include "SignatureArea.h"
 #include "DeviceSignature.h"
 
+#include "timer_handler.h"
+
 #include "loglevels.h"
 #define __MODUUL__ "main"
 #define __LOG_LEVEL__ (LOG_LEVEL_main & BASE_LOG_LEVEL)
@@ -43,29 +47,59 @@
 #include "incbin.h"
 INCBIN(Header, "header.bin");
 
-static void main_loop (void * arg)
-{
-	bool annoy = false;
+static osMutexId_t m_led_mutex;
 
+static void led0_timer_cb(void* argument)
+{
+    osMutexAcquire(m_led_mutex, osWaitForever);
+    debug1("led0 timer");
+	setLEDsPWM(getLEDsPWM()^1);
+    osMutexRelease(m_led_mutex);
+}
+
+static void led1_timer_cb(void* argument)
+{
+    osMutexAcquire(m_led_mutex, osWaitForever);
+    debug1("led1 timer");
+	setLEDsPWM(getLEDsPWM()^2);
+    osMutexRelease(m_led_mutex);
+}
+
+// App loop - do setup and periodically print status
+void app_loop ()
+{
 	debug1("main_loop");
 
 	// Switch to a thread-safe logger
  	basic_rtos_logger_setup();
 
+    m_led_mutex = osMutexNew(NULL);
+
+    osTimerId_t led0_timer = osTimerNew(&led0_timer_cb, osTimerPeriodic, NULL, NULL);
+    osTimerId_t led1_timer = osTimerNew(&led1_timer_cb, osTimerPeriodic, NULL, NULL);
+
+    debug1("t1 %p t2 %p", led0_timer, led1_timer);
+
+	timer0CCInit();
+
+    osTimerStart(led0_timer, 1000);
+	osDelay(1000);
+    osTimerStart(led1_timer, 1000);
+   
 	for (;;)
-	{
-		osDelay(1000); //1 sec
-		if(annoy)
-		{
-			debug1("/t/tNotice me");
-			annoy = false;
-		}
-		else
-		{
-			debug1("Hello");
-			annoy = true;
-		}
-	}
+    {
+        osMutexAcquire(m_led_mutex, osWaitForever);
+        info1("leds %u", (unsigned int)PLATFORM_LedsGet());
+        osMutexRelease(m_led_mutex);
+        osDelay(1000);
+    }
+}
+
+//Use TIMER1 to regularly change PWM duty cycle and create LED fading effect
+void dimmer_loop ()
+{
+	timer1Init();
+	startFadingLEDs();
 }
 
 int main()
@@ -87,7 +121,6 @@ int main()
 
     // Radio GPIO/PRS for LNA on some MGM12P
     PLATFORM_RadioInit();
-	GPIO_PinModeSet(gpioPortF, 6, gpioModePushPull, 1);
     
 	// Must initialize kernel to allow creation of threads/mutexes etc
     osKernelInitialize();
@@ -99,7 +132,10 @@ int main()
 
     // Most actual initialization can be performed once kernel has booted
     const osThreadAttr_t main_thread_attr = { .name = "main" };
-    osThreadNew(main_loop, NULL, &main_thread_attr);
+    osThreadNew(app_loop, NULL, &main_thread_attr);
+
+    const osThreadAttr_t timer1_thread_attr = { .name = "timer1" };
+    osThreadNew(dimmer_loop, NULL, &timer1_thread_attr);
 
     if (osKernelReady == osKernelGetState())
     {
