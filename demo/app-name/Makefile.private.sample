@@ -1,0 +1,29 @@
+# Sample of a developer's local configuration overrides for the build process.
+# To enable the overrides, set your desired values and copy this file to
+# "${PROJECT_ROOT}/Makefile.private".
+
+# Override version
+#VERSION_MAJOR := 255
+#VERSION_MINOR := 0
+#VERSION_PATCH := 1
+
+# Destination for build results
+#BUILD_BASE_DIR          := $(HOME)/tmp
+
+# Set build verbosity on
+#VERBOSE                 := yes
+
+# Set the default programmer to Thinnect Silabs programmer, device no 12
+FTDI_ID                 := T001
+# Extra arguments for install step on programmer
+#PROGRAMMER_INSTALL_ARGS := --debug=3
+# Extra arguments for reset step on programmer
+#PROGRAMMER_RESET_ARGS   := --debug=3
+
+#RELEASE_BUILD           := 0
+
+# Append to the C preprocessor flags
+#CFLAGS                  += -O0
+
+# Append to the linker flags
+#LDFLAGS                 += -Wl,--print-map
