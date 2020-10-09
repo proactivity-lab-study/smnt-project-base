@@ -46,6 +46,7 @@ INCBIN(Header, "header.bin");
 static void main_loop (void * arg)
 {
 	bool annoy = false;
+	uint32_t i;
 
 	debug1("main_loop");
 
@@ -54,15 +55,16 @@ static void main_loop (void * arg)
 
 	for (;;)
 	{
+		//if logger breaks change USE_TICKLESS_IDLE=1 to USE_TICKLESS_IDLE=0
 		osDelay(1000); //1 sec
 		if(annoy)
 		{
-			debug1("/t/tNotice me");
+			info1("\t\tNotice me ");
 			annoy = false;
 		}
 		else
 		{
-			debug1("Hello");
+			info1("Hello ");
 			annoy = true;
 		}
 	}
