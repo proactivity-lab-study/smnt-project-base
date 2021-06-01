@@ -3,7 +3,7 @@
  *
  * Uses PWM.
  *
- * @copyright ProLab 2020
+ * @copyright ProLab, TTÜ 2020
  * @license MIT
  */
 #include <stdio.h>
@@ -146,5 +146,5 @@ int main()
         err1("!osKernelReady");
     }
 
-    while(true);
+    for (;;);
 }
