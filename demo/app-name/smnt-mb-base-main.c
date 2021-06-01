@@ -1,8 +1,8 @@
 /**
  * Project base for smnt-mb devices.
  *
- * @copyright ProLab 2020
- * @license <TBD>
+ * @copyright ProLab, TTÜ 2020
+ * @license MIT
  */
 #include <stdio.h>
 #include <stdint.h>
@@ -46,7 +46,6 @@ INCBIN(Header, "header.bin");
 static void main_loop (void * arg)
 {
 	bool annoy = false;
-	uint32_t i;
 
 	debug1("main_loop");
 
@@ -112,5 +111,5 @@ int main()
         err1("!osKernelReady");
     }
 
-    while(true);
+    for (;;);
 }

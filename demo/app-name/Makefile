@@ -2,7 +2,7 @@
 
 # _______________________ User overridable configuration _______________________
 
-PROJECT_NAME            ?= project-base
+PROJECT_NAME            ?= app-name
 
 VERSION_MAJOR           ?= 1
 VERSION_MINOR           ?= 0
@@ -48,7 +48,7 @@ ROOT_DIR                ?= $(abspath ../..)
 ZOO                     ?= $(ROOT_DIR)/zoo
 
 # Silabs SDK location and version
-SILABS_SDKDIR           ?= $(HOME)/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.6
+SILABS_SDKDIR           ?= $(HOME)/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.7
 
 # Configure how image is programmed to target device
 PROGRAM_IMAGE           ?= $(BUILD_DIR)/$(PROJECT_NAME).bin
