@@ -1,7 +1,7 @@
 /**
  * Blink example for smnt-mb devices.
  *
- * Uses PWM.
+ * Uses PWM to fade LEDs on and off.
  *
  * @copyright ProLab, TTÜ 2020
  * @license MIT
@@ -17,11 +17,6 @@
 #include "em_emu.h"
 #include "em_cmu.h"
 #include "em_gpio.h"
-
-#include "dmadrv.h"
-
-#include "platform_io.h"
-#include "platform_adc.h"
 
 #include "sleep.h" // emdrv sleep.h
 #include "lptsleep.h"
@@ -68,17 +63,15 @@ static void led1_timer_cb(void* argument)
 // App loop - do setup and periodically print status
 void app_loop ()
 {
-	debug1("main_loop");
-
 	// Switch to a thread-safe logger
  	basic_rtos_logger_setup();
+
+	debug1("main_loop");
 
     m_led_mutex = osMutexNew(NULL);
 
     osTimerId_t led0_timer = osTimerNew(&led0_timer_cb, osTimerPeriodic, NULL, NULL);
     osTimerId_t led1_timer = osTimerNew(&led1_timer_cb, osTimerPeriodic, NULL, NULL);
-
-    debug1("t1 %p t2 %p", led0_timer, led1_timer);
 
 	timer0CCInit();
 
@@ -89,7 +82,7 @@ void app_loop ()
 	for (;;)
     {
         osMutexAcquire(m_led_mutex, osWaitForever);
-        info1("leds %u", (unsigned int)PLATFORM_LedsGet());
+        info1("leds %u", getLEDsPWM());
         osMutexRelease(m_led_mutex);
         osDelay(1000);
     }
@@ -111,17 +104,14 @@ int main()
 
 	basic_noos_logger_setup();
 
-    debug1("Sense MW "VERSION_STR" (%d.%d.%d)", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
+    debug1("Blink-PWM "VERSION_STR" (%d.%d.%d)", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
 	// Initialize node signature module
 	sigInit();
 	uint8_t eui[8];
 	sigGetEui64(eui);
 	infob1("EUI64:", eui, sizeof(eui));
-
-    // Radio GPIO/PRS for LNA on some MGM12P
-    PLATFORM_RadioInit();
-    
+   
 	// Must initialize kernel to allow creation of threads/mutexes etc
     osKernelInitialize();
 

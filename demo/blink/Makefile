@@ -124,26 +124,22 @@ SOURCES += \
     $(SILABS_SDKDIR)/platform/emlib/src/em_emu.c \
     $(SILABS_SDKDIR)/platform/emlib/src/em_cmu.c \
     $(SILABS_SDKDIR)/platform/emlib/src/em_rmu.c \
-    $(SILABS_SDKDIR)/platform/emlib/src/em_usart.c \
     $(SILABS_SDKDIR)/platform/emlib/src/em_gpio.c \
+    $(SILABS_SDKDIR)/platform/emlib/src/em_usart.c \
     $(SILABS_SDKDIR)/platform/emlib/src/em_msc.c \
-    $(SILABS_SDKDIR)/platform/emlib/src/em_adc.c \
     $(SILABS_SDKDIR)/platform/emlib/src/em_timer.c \
     $(SILABS_SDKDIR)/platform/emlib/src/em_rtcc.c \
-    $(SILABS_SDKDIR)/platform/emlib/src/em_prs.c \
-    $(SILABS_SDKDIR)/platform/emlib/src/em_ldma.c
+    $(SILABS_SDKDIR)/platform/emlib/src/em_prs.c 
 
 INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/dmadrv/inc
 INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/dmadrv/config
 INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/sleep/inc
 INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/common/inc
-SOURCES += $(SILABS_SDKDIR)/platform/emdrv/dmadrv/src/dmadrv.c
 SOURCES += $(SILABS_SDKDIR)/platform/emdrv/sleep/src/sleep.c
 
 # Node-platform
 INCLUDES += -I$(NODE_PLATFORM_DIR)/include/silabs
 SOURCES += $(NODE_PLATFORM_DIR)/silabs/lptsleep.c
-SOURCES += $(NODE_PLATFORM_DIR)/common/platform_adc.c
 SOURCES += $(NODE_PLATFORM_DIR)/common/sys_panic.c
 
 INCLUDES += -I$(NODE_PLATFORM_DIR)/widgets
@@ -168,10 +164,6 @@ INCLUDES += -I$(ZOO)/lammertb.libcrc/include \
             -I$(ZOO)/graphitemaster.incbin
 SOURCES += $(ZOO)/lammertb.libcrc/src/crcccitt.c
 LDFLAGS += -Wl,--undefined=gHeaderData -Wl,--undefined=gHeaderSize
-
-# DMA ADC
-INCLUDES += -I$(ZOO)/prolab.dmadrv-adc/include/silabs
-SOURCES += $(ZOO)/prolab.dmadrv-adc/src/silabs/adc_dmadrv.c
 
 # watchdog, loggers, radio etc...
 INCLUDES += -I$(NODE_PLATFORM_DIR)/include
