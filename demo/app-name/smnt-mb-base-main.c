@@ -16,10 +16,10 @@
 #include "em_cmu.h"
 #include "em_gpio.h"
 
-#include "dmadrv.h"
+//#include "dmadrv.h"
 
-#include "platform_io.h"
-#include "platform_adc.h"
+//#include "platform_io.h"
+//#include "platform_adc.h"
 
 #include "sleep.h" // emdrv sleep.h
 #include "lptsleep.h"
@@ -43,27 +43,30 @@
 #include "incbin.h"
 INCBIN(Header, "header.bin");
 
-static void main_loop (void * arg)
+void main_loop (void * arg)
 {
 	bool annoy = false;
-
-	debug1("main_loop");
 
 	// Switch to a thread-safe logger
  	basic_rtos_logger_setup();
 
+	debug1("main_loop");
+
 	for (;;)
 	{
-		//if logger breaks change USE_TICKLESS_IDLE=1 to USE_TICKLESS_IDLE=0
+		// NOTE:
+		// If serial-logger starts getting unprintable characters change 
+		// USE_TICKLESS_IDLE=1 to USE_TICKLESS_IDLE=0 in the Makefile.
+		//
 		osDelay(1000); //1 sec
 		if(annoy)
 		{
-			info1("\t\tNotice me ");
+			info1("\t\tNotice me!");
 			annoy = false;
 		}
 		else
 		{
-			info1("Hello ");
+			info1("Hello!");
 			annoy = true;
 		}
 	}
@@ -78,7 +81,7 @@ int main()
 
 	basic_noos_logger_setup();
 
-    debug1("Sense MW "VERSION_STR" (%d.%d.%d)", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
+    debug1("SMNT-MB base "VERSION_STR" (%d.%d.%d)", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
 	// Initialize node signature module
 	sigInit();
@@ -87,8 +90,8 @@ int main()
 	infob1("EUI64:", eui, sizeof(eui));
 
     // Radio GPIO/PRS for LNA on some MGM12P
-    PLATFORM_RadioInit();
-	GPIO_PinModeSet(gpioPortF, 6, gpioModePushPull, 1);
+    // PLATFORM_RadioInit();
+	// GPIO_PinModeSet(gpioPortF, 6, gpioModePushPull, 1);
     
 	// Must initialize kernel to allow creation of threads/mutexes etc
     osKernelInitialize();
