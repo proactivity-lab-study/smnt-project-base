@@ -111,7 +111,7 @@ int main()
 	uint8_t eui[8];
 	sigGetEui64(eui);
 	infob1("EUI64:", eui, sizeof(eui));
-   
+
 	// Must initialize kernel to allow creation of threads/mutexes etc
     osKernelInitialize();
 

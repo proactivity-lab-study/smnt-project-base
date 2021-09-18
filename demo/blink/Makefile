@@ -18,8 +18,8 @@ APP_START               := 0
 CFLAGS                  += -Wall -std=c99 -ffunction-sections -fdata-sections -ffreestanding -fsingle-precision-constant -Wstrict-aliasing=0 -D__START=main -D__STARTUP_CLEAR_BSS
 CFLAGS                  += -DVTOR_START_LOCATION=$(APP_START) -Wl,--section-start=.text=$(APP_START)
 CFLAGS                  += -DUSE_CMSIS_OS2
-CFLAGS                  += -DconfigUSE_TICKLESS_IDLE=1 -DconfigEXPECTED_IDLE_TIME_BEFORE_SLEEP=2
-LDFLAGS                 += -nostartfiles -Wl,--gc-sections -Wl,--relax -Wl,-Map=$(@:.elf=.map),--cref -Wl,--wrap=atexit
+CFLAGS                  += -DconfigUSE_TICKLESS_IDLE=0 -DconfigEXPECTED_IDLE_TIME_BEFORE_SLEEP=2
+LDFLAGS                 += -nostartfiles -Wl,--gc-sections -Wl,--relax -Wl,-Map=$(@:.elf=.map),--cref -Wl,--wrap=atexit -specs=nosys.specs
 LDLIBS                  += -lgcc -lm
 INCLUDES                += -Xassembler -I$(BUILD_DIR) -I.
 
@@ -48,7 +48,7 @@ ROOT_DIR                ?= $(abspath ../..)
 ZOO                     ?= $(ROOT_DIR)/zoo
 
 # Silabs SDK location and version
-SILABS_SDKDIR           ?= $(HOME)/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.7
+SILABS_SDKDIR           ?= $(HOME)/SimplicityStudio_v5/developer/sdks/gecko_sdk_suite/v3.2
 
 # Configure how image is programmed to target device
 PROGRAM_IMAGE           ?= $(BUILD_DIR)/$(PROJECT_NAME).bin
@@ -131,15 +131,17 @@ SOURCES += \
     $(SILABS_SDKDIR)/platform/emlib/src/em_rtcc.c \
     $(SILABS_SDKDIR)/platform/emlib/src/em_prs.c 
 
-INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/dmadrv/inc
-INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/dmadrv/config
+#INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/dmadrv/inc
+#INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/dmadrv/config
 INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/sleep/inc
 INCLUDES += -I$(SILABS_SDKDIR)/platform/emdrv/common/inc
+
 SOURCES += $(SILABS_SDKDIR)/platform/emdrv/sleep/src/sleep.c
 
 # Node-platform
 INCLUDES += -I$(NODE_PLATFORM_DIR)/include/silabs
 SOURCES += $(NODE_PLATFORM_DIR)/silabs/lptsleep.c
+
 SOURCES += $(NODE_PLATFORM_DIR)/common/sys_panic.c
 
 INCLUDES += -I$(NODE_PLATFORM_DIR)/widgets
