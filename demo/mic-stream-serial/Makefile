@@ -25,7 +25,8 @@ INCLUDES                += -Xassembler -I$(BUILD_DIR) -I.
 
 # Set logging verbosity
 #CFLAGS                  += -DLOGGER_TIMESTAMP
-BASE_LOG_LEVEL          ?= 0xFFFF
+#BASE_LOG_LEVEL          ?= 0xFFFF
+BASE_LOG_LEVEL          ?= 0 # no logging
 
 # If set, disables asserts and debugging, enables optimization
 RELEASE_BUILD           ?= 1
