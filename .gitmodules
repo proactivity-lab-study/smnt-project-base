@@ -51,7 +51,3 @@
 	path = zoo/prolab.dmadrv-adc
 	url = https://github.com/proactivity-lab/dmadrv-adc.git
 	branch = master
-[submodule "zoo/prolab.smenete-platforms"]
-	path = zoo/prolab.smenete-platforms
-	url = git@bitbucket.org:prolab/smenete-platforms.git
-	branch = master
