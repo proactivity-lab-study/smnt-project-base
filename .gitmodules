@@ -54,4 +54,4 @@
 [submodule "zoo/thinnect.smenete-platforms"]
 	path = zoo/thinnect.smenete-platforms
 	url = https://github.com/thinnect/smenete-platforms.git
-	branch = master
+	branch = main
