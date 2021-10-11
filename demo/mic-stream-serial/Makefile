@@ -67,7 +67,7 @@ HEADEREDIT              ?= headeredit
 
 BUILD_DIR                = $(BUILD_BASE_DIR)/$(BUILD_TARGET)
 BUILDSYSTEM_DIR         := $(ZOO)/thinnect.node-buildsystem/make
-PLATFORMS_DIRS          := $(ZOO)/thinnect.node-buildsystem/make $(ZOO)/thinnect.dev-platforms/make $(ZOO)/prolab.smenete-platforms/make
+PLATFORMS_DIRS          := $(ZOO)/thinnect.node-buildsystem/make $(ZOO)/thinnect.dev-platforms/make $(ZOO)/thinnect.smenete-platforms/make
 PHONY_GOALS             := all clean
 TARGETLESS_GOALS        += clean
 UUID_APPLICATION        := 066844cc-3d9c-42ff-895e-a0b0de39fc13
